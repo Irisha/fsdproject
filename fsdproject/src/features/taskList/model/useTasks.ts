@@ -39,6 +39,6 @@ export function useTasks() {
     }, [filter])
 
     return {
-      tasks: filteredTasks
+      tasks: filteredTasks, filter, setFilter
     };
 }
