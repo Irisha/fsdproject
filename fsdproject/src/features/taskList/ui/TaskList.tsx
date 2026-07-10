@@ -1,11 +1,10 @@
 import { TaskCard} from "entities/task";
-import styles from "./TaskList.module.css";
-import { Button, RadioGroup } from "@gravity-ui/uikit";
+import { Button, Select } from "@gravity-ui/uikit";
 import { DeleteIcon } from "shared/ui/icons";
 import { useTasks, type Filter } from "../model/useTasks";
+import styles from "./TaskList.module.css";
 
 export function TaskList() {
-
   const { tasks, filter, setFilter, removeTask} = useTasks();
   
   const filterOptions: { value: Filter; content: Filter }[] = [
@@ -16,27 +15,32 @@ export function TaskList() {
 
     return (
       <div>
-        <RadioGroup
-          className={styles.radiogroup}
-          value={filter}
+        <Select
+          className={styles.filter}
+          value={[filter]}
+          onUpdate={(nextValues) => {
+              const nextValue = nextValues[0] as Filter;
+              if (nextValue) {
+                  setFilter(nextValue);
+              }
+          }}
           options={filterOptions}
-          onUpdate={(value) => setFilter(value as Filter)}
         />
-      <div className={styles.tasks}>
-        {tasks?.map(task => (
-          <div className={styles.row} key={task.id}>
-            <TaskCard task={task} />
-            <Button
-              title='Удалить'
-              view="flat"
-              className={styles.button}
-              onClick={() => removeTask(task.id)}
-            >
-              <DeleteIcon/>
-            </Button>
-          </div> 
-        ))}
-      </div>
+        <div className={styles.tasks}>
+          {tasks?.map(task => (
+            <div className={styles.row} key={task.id}>
+              <TaskCard task={task} />
+              <Button
+                title='Удалить'
+                view="flat"
+                className={styles.button}
+                onClick={() => removeTask(task.id)}
+              >
+                <DeleteIcon/>
+              </Button>
+            </div> 
+          ))}
+        </div>
       </div>
     );
 }
