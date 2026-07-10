@@ -1,4 +1,4 @@
-import { Checkbox } from "semantic-ui-react";
+import {Checkbox} from '@gravity-ui/uikit';
 import type { Task } from "../model/types";
 import styles from "./TaskCard.module.css";
 
@@ -10,7 +10,7 @@ export function TaskCard({ task }: TaskCardProps) {
     return (
         <div className={styles.card}>
             <Checkbox
-                label={task.title}
+                content={task.title}
                 checked={task.completed}
             />
         </div>
