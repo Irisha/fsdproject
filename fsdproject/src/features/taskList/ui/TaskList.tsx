@@ -1,15 +1,27 @@
-import { TaskCard, type Task } from "entities/task";
+import { TaskCard} from "entities/task";
 import styles from "./TaskList.module.css";
-import { Button } from "@gravity-ui/uikit";
+import { Button, RadioGroup } from "@gravity-ui/uikit";
 import { DeleteIcon } from "shared/ui/icons";
+import { useTasks, type Filter } from "../model/useTasks";
 
-type TaskListProps = {
-    tasks: Task[],
-    removeTask: (taskId: Task['id']) => void
-};
+export function TaskList() {
 
-export function TaskList({ tasks, removeTask }: TaskListProps) {
+  const { tasks, filter, setFilter, removeTask} = useTasks();
+  
+  const filterOptions: { value: Filter; content: Filter }[] = [
+    { value: 'all', content: 'all' },
+    { value: 'completed', content: 'completed' },
+    { value: 'incomplete', content: 'incomplete' },
+];
+
     return (
+      <div>
+        <RadioGroup
+          className={styles.radiogroup}
+          value={filter}
+          options={filterOptions}
+          onUpdate={(value) => setFilter(value as Filter)}
+        />
       <div className={styles.tasks}>
         {tasks?.map(task => (
           <div className={styles.row} key={task.id}>
@@ -24,6 +36,7 @@ export function TaskList({ tasks, removeTask }: TaskListProps) {
             </Button>
           </div> 
         ))}
+      </div>
       </div>
     );
 }
