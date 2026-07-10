@@ -5,7 +5,7 @@ import styles from "./TaskWidget.module.css";
 
 export function TaskWidget() {
 
-  const { tasks, filter, setFilter } = useTasks();
+  const { tasks, filter, setFilter, removeTask} = useTasks();
   
   const filterOptions: { value: Filter; content: Filter }[] = [
     { value: 'all', content: 'all' },
@@ -21,7 +21,7 @@ export function TaskWidget() {
           options={filterOptions}
           onUpdate={(value) => setFilter(value as Filter)}
         />
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} removeTask={removeTask}/>
     </div>
   )
 };

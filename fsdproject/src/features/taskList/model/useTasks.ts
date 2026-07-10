@@ -36,9 +36,13 @@ export function useTasks() {
           case 'incomplete':
             setFilteredTasks(tasks?.filter(task => !task.completed));
         }
-    }, [filter])
+    }, [filter, tasks])
+
+    const removeTask = (taskId: Task['id']) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    };
 
     return {
-      tasks: filteredTasks, filter, setFilter
+      tasks: filteredTasks, filter, setFilter, removeTask
     };
 }
