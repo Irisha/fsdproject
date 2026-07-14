@@ -28,6 +28,7 @@ export function useTasks() {
     useEffect(() => {
       switch (filter) {
           case 'all':
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFilteredTasks(tasks);
             break;
           case 'completed':

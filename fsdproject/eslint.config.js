@@ -1,3 +1,4 @@
+import globals from "globals";
 import js from "@eslint/js";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -8,6 +9,15 @@ import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
 
 export default [
+    {
+        ignores: [
+            "dist/**", 
+            "build/**", 
+            "eslint.config.js", 
+            "vite.config.ts"
+        ],
+    },
+
     js.configs.recommended,
     prettier,
 
@@ -18,8 +28,10 @@ export default [
             parser: tsParser,
             ecmaVersion: 2020,
             sourceType: "module",
+            globals: globals.browser,
             parserOptions: {
-                project: "./tsconfig.json",
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
         },
 
@@ -36,13 +48,21 @@ export default [
                 version: "detect",
             },
 
+            "import/resolver": {
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: "./tsconfig.json", 
+                },
+                node: true,
+            },
+
             "boundaries/elements": [
-                { type: "shared", pattern: "src/shared/*" },
-                { type: "entities", pattern: "src/entities/*" },
-                { type: "features", pattern: "src/features/*" },
-                { type: "widgets", pattern: "src/widgets/*" },
-                { type: "pages", pattern: "src/pages/*" },
-                { type: "app", pattern: "src/app/*" },
+                { type: "shared", pattern: ["src/shared/*"] },
+                { type: "entities", pattern: ["src/entities/*"] },
+                { type: "features", pattern: ["src/features/*"] },
+                { type: "widgets", pattern: ["src/widgets/*"] },
+                { type: "pages", pattern: ["src/pages/*"] },
+                { type: "app", pattern: ["src/app/*"] },
             ],
         },
 
@@ -52,15 +72,29 @@ export default [
             ...jsxA11y.configs.recommended.rules,
             ...importPlugin.configs.recommended.rules,
 
-            "boundaries/element-types": [
+            "react/react-in-jsx-scope": "off",
+            
+            "boundaries/dependencies": [
                 "error",
                 {
                     default: "disallow",
-                    rules: [
-                        { from: "features", allow: ["shared", "entities"] },
-                        { from: "entities", allow: ["shared"] },
-                        { from: "widgets", allow: ["shared", "features", "entities"] },
-                        { from: "pages", allow: ["widgets", "features", "entities", "shared"] },
+                    policies: [
+                        { 
+                            from: { element: { type: "features" } }, 
+                            allow: { to: { element: { type: ["shared", "entities"] } } } 
+                        },
+                        { 
+                            from: { element: { type: "entities" } }, 
+                            allow: { to: { element: { type: "shared" } } } 
+                        },
+                        { 
+                            from: { element: { type: "widgets" } }, 
+                            allow: { to: { element: { type: ["shared", "features", "entities"] } } } 
+                        },
+                        { 
+                            from: { element: { type: "pages" } }, 
+                            allow: { to: { element: { type: ["widgets", "features", "entities", "shared"] } } } 
+                        },
                     ],
                 },
             ],
