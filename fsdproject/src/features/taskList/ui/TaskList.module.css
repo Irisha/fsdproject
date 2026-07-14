@@ -1,0 +1,18 @@
+.tasks {
+    max-width: 600px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-grow: initial;
+    gap: 8px;
+}
+
+.button {
+    margin-bottom: 1rem;
+}
+
+.filter {
+    margin-bottom: 16px;
+}
