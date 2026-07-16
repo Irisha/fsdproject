@@ -5,7 +5,17 @@
     margin-bottom: 1rem;
     background: #f9f9f9;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     flex: max-content;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    gap: 8px;
+}
+
+.button {
+    margin-bottom: 1rem;
 }

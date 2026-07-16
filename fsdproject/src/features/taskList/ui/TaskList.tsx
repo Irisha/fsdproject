@@ -1,6 +1,5 @@
 import { TaskCard} from "entities/task";
-import { Button, Select } from "@gravity-ui/uikit";
-import { DeleteIcon } from "shared/ui/icons";
+import { Select } from "@gravity-ui/uikit";
 import { useTasks, type Filter } from "../model/useTasks";
 import styles from "./TaskList.module.css";
 
@@ -28,17 +27,7 @@ export function TaskList() {
         />
         <div className={styles.tasks}>
           {tasks?.map(task => (
-            <div className={styles.row} key={task.id}>
-              <TaskCard task={task} />
-              <Button
-                title='Удалить'
-                view="flat"
-                className={styles.button}
-                onClick={() => removeTask(task.id)}
-              >
-                <DeleteIcon/>
-              </Button>
-            </div> 
+            <TaskCard key={task.id} task={task} removeTask={removeTask} />
           ))}
         </div>
       </div>
