@@ -7,6 +7,7 @@ import importPlugin from "eslint-plugin-import";
 import boundaries from "eslint-plugin-boundaries";
 import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
 
 export default [
     {
@@ -41,6 +42,7 @@ export default [
             "jsx-a11y": jsxA11y,
             import: importPlugin,
             boundaries,
+            "@typescript-eslint": tseslint.plugin,
         },
 
         settings: {
@@ -73,6 +75,12 @@ export default [
             ...importPlugin.configs.recommended.rules,
 
             "react/react-in-jsx-scope": "off",
+            "no-unused-vars": "off",
+      
+            "@typescript-eslint/no-unused-vars": ["error", { 
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_" 
+            }],
             
             "boundaries/dependencies": [
                 "error",

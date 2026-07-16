@@ -1,6 +1,6 @@
 // features/taskList/model/useTasks.ts
 
-import { useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Task } from 'entities/task';
 
 export type Filter = 'all' | 'completed' | 'incomplete';
@@ -23,25 +23,21 @@ const initialTasks: Task[] = [
 export function useTasks() {
     const [ tasks, setTasks ] = useState<Task[]>(initialTasks);
     const [ filter, setFilter ] = useState<Filter>('all');
-    const [ filteredTasks, setFilteredTasks ] = useState<Task[]>(initialTasks);
 
-    useEffect(() => {
+    const filteredTasks = useMemo(() => {
       switch (filter) {
           case 'all':
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setFilteredTasks(tasks);
-            break;
+            return(tasks);
           case 'completed':
-            setFilteredTasks(tasks?.filter(task => task.completed));
-            break;
+            return(tasks?.filter(task => task.completed));
           case 'incomplete':
-            setFilteredTasks(tasks?.filter(task => !task.completed));
+            return(tasks?.filter(task => !task.completed));
         }
     }, [filter, tasks])
 
-    const removeTask = (taskId: Task['id']) => {
+    const removeTask = useCallback((taskId: Task['id']) => {
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-    };
+    }, []);
 
     return {
       tasks: filteredTasks, filter, setFilter, removeTask
