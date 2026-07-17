@@ -11,9 +11,9 @@ import prettier from "eslint-config-prettier";
 export default [
     {
         ignores: [
-            "dist/**", 
-            "build/**", 
-            "eslint.config.js", 
+            "dist/**",
+            "build/**",
+            "eslint.config.js",
             "vite.config.ts"
         ],
     },
@@ -51,7 +51,7 @@ export default [
             "import/resolver": {
                 typescript: {
                     alwaysTryTypes: true,
-                    project: "./tsconfig.json", 
+                    project: "./tsconfig.json",
                 },
                 node: true,
             },
@@ -73,27 +73,31 @@ export default [
             ...importPlugin.configs.recommended.rules,
 
             "react/react-in-jsx-scope": "off",
-            
+
             "boundaries/dependencies": [
                 "error",
                 {
                     default: "disallow",
                     policies: [
-                        { 
-                            from: { element: { type: "features" } }, 
-                            allow: { to: { element: { type: ["shared", "entities"] } } } 
+                        {
+                            from: { element: { type: "features" } },
+                            allow: { to: { element: { type: ["shared", "entities"] } } }
                         },
-                        { 
-                            from: { element: { type: "entities" } }, 
-                            allow: { to: { element: { type: "shared" } } } 
+                        {
+                            from: { element: { type: "entities" } },
+                            allow: { to: { element: { type: "shared" } } }
                         },
-                        { 
-                            from: { element: { type: "widgets" } }, 
-                            allow: { to: { element: { type: ["shared", "features", "entities"] } } } 
+                        {
+                            from: { element: { type: "widgets" } },
+                            allow: { to: { element: { type: ["shared", "features", "entities"] } } }
                         },
-                        { 
-                            from: { element: { type: "pages" } }, 
-                            allow: { to: { element: { type: ["widgets", "features", "entities", "shared"] } } } 
+                        {
+                            from: { element: { type: "pages" } },
+                            allow: { to: { element: { type: ["widgets", "features", "entities", "shared"] } } }
+                        },
+                        {
+                            from: { element: { type: "app" } },
+                            allow: { to: { element: { type: ["processes", "pages", "widgets", "features", "entities", "shared"] } } }
                         },
                     ],
                 },
