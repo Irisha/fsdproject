@@ -12,6 +12,7 @@ export const tasksApi = createApi({
     getTasks: build.query<Task[], void>({
       query: () => 'todos',
       transformResponse: (response: Task[]) => response,
+      providesTags: ['Tasks']
     }),
   }),
 });

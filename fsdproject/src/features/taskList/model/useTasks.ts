@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Task } from 'entities/task';
-import { useGetTasksQuery } from "entities/task/api/taskApi";
+import { useGetTasksQuery } from "entities/task";
 
 export type Filter = 'all' | 'completed' | 'incomplete';
 
