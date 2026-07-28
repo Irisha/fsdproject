@@ -1,17 +1,17 @@
 import { useForm, useWatch, type SubmitHandler } from 'react-hook-form';
-
-type FormInputs = {
-  username: string;
-  email: string;
-  password: string;
-  passwordRepeated: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { defaultValues, userRegistrationSchema } from "../model";
+import type { RegistrationValues } from "../model";
 
 
 export const RegistryForm = () => {
-  const methods = useForm<FormInputs>();
-  const { register, handleSubmit, formState: { errors }, } = useForm<FormInputs>();
-  const onSubmit: SubmitHandler<FormInputs> = (values) => console.log(values);
+  const methods = useForm<RegistrationValues>();
+  const { register, handleSubmit, formState: { errors }, } = useForm<RegistrationValues>({
+    resolver: zodResolver(userRegistrationSchema),
+    defaultValues,
+    mode: "onTouched",
+  });
+  const onSubmit: SubmitHandler<RegistrationValues> = (values) => console.log(values);
   const passwordValue = useWatch({
     control: methods.control,
     name: "password",
@@ -51,14 +51,14 @@ export const RegistryForm = () => {
       <div>
         <label>Подтверждение пароля:
         <input 
-          {...register("passwordRepeated",
+          {...register("repeatedPassword",
             { required: "Повторите пароль",
               validate: (value) => 
                 value === passwordValue || "Пароли не совпадают"
          },)} 
         />
         </label>
-        {errors.passwordRepeated && <p style={{ color: "red" }}>{errors.passwordRepeated.message}</p>}
+        {errors.repeatedPassword && <p style={{ color: "red" }}>{errors.repeatedPassword.message}</p>}
       </div>
 
       <button type="submit">Отправить</button>
