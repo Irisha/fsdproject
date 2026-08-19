@@ -1,0 +1,11 @@
+.formline {
+  width: 400px;
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.success {
+    color: green;
+}
