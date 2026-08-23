@@ -1,6 +1,6 @@
-import { useActionState, useEffect, useReducer } from "react";
+import { useActionState, useReducer } from "react";
 import { defaultValues } from "../model";
-import styles from './ActionStateWithReducer.module.css'
+import styles from './ActionStateWithReducer.module.css';
 
 type FormState = {
   success: boolean;
@@ -23,7 +23,7 @@ function formReducer(state: FormState, action: Action): FormState {
     case 'SET_DIRTY':
       return { ...state, success: false, message: "", isDirty: true };
     case 'SUBMIT_START':
-      return { ...state, success: false, message: "" }; // сброс флагов перед стартом
+      return { ...state, success: false, message: "" };
     case 'SUBMIT_SUCCESS':
       return { success: true, message: action.payload, isDirty: false };
     default:
@@ -32,29 +32,31 @@ function formReducer(state: FormState, action: Action): FormState {
 }
 
 export const ActionStateWithReducer = () => {
-    const [state, dispatch] = useReducer(formReducer, {
+  const [state, dispatch] = useReducer(formReducer, {
     success: false,
     message: "",
     isDirty: false,
   });
 
-  const [actionResult, formAction, isPending] = useActionState<ActionResult, FormData>(
+  const [_, formAction, isPending] = useActionState<ActionResult, FormData>(
     async (_prevState: ActionResult, _formData: FormData) => {
+      dispatch({ type: 'SUBMIT_START' });
+
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      return {
+      const result = {
         success: true,
         message: "Данные успешно отправлены!",
       };
+
+      if (result.success) {
+        dispatch({ type: 'SUBMIT_SUCCESS', payload: result.message });
+      }
+
+      return result;
     },
     null
   );
-
-  useEffect(() => {
-    if (actionResult?.success) {
-      dispatch({ type: 'SUBMIT_SUCCESS', payload: actionResult.message });
-    }
-  }, [actionResult]);
 
   const handleFormChange = () => {
     if (!state.isDirty) {
@@ -99,7 +101,7 @@ export const ActionStateWithReducer = () => {
         {isPending ? "Saving" : "Сохранить"}
       </button>
       
-      {state.success && <p className={styles.success}>Saved!</p>}
+      {state.success && <p className={styles.success}>{state.message || "Saved!"}</p>}
     </form>
   );
 }
